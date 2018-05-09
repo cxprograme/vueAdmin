@@ -26,6 +26,14 @@
 				default:function(){
 					return []
 				}
+			},
+			pageNum:{
+				type:Number,
+				default:1
+			},
+			pageSize:{
+				type:Number,
+				default:4
 			}
 		},
 	    data() {
@@ -77,7 +85,7 @@
 	      handleNodeClick:function(data,node){
 	      	var _this = this;
 	      	if(node.level == 4){
-	      		$.ajax({
+	      		/*$.ajax({
 				    url:'http://localhost:8081/menuwork/menus/admin/tree',
 				    type:'GET', //GET
 				    async:false,    //或false,是否异步
@@ -93,6 +101,31 @@
 				    success:function(data,textStatus,jqXHR){
 				    	// console.log('Data Table'+data);
 				    	_this.$emit('treedata',data);
+				    },
+				    error:function(xhr,textStatus){
+				    },
+				    complete:function(){
+				    }
+				})*/
+				$.ajax({
+				    url:'http://localhost:8081/menuwork/menus/admin',
+				    type:'GET', //GET
+				    async:false,    //或false,是否异步
+				    data:{
+				        'menu_type':'0,1',
+				        'user_id':'default_menu',
+        				'parent_menu_id':node.data.menu_id,
+        				'pageNum':_this.pageNum,
+        				'pageSize':_this.pageSize
+				    },
+				    timeout:5000,    //超时时间
+				    dataType:'json',    //返回的数据格式：
+				    beforeSend:function(xhr){
+				    },
+				    success:function(data,textStatus,jqXHR){
+				    	// console.log('Data Table'+data);
+				    	_this.$emit('treedata',data);
+				    	_this.$emit('pmenuid',node.data.menu_id);
 				    },
 				    error:function(xhr,textStatus){
 				    },
